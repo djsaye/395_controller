@@ -22,7 +22,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+//#include "usbd_custom_hid_if.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -47,6 +47,8 @@ I2S_HandleTypeDef hi2s3;
 SPI_HandleTypeDef hspi1;
 
 /* USER CODE BEGIN PV */
+extern USBD_HandleTypeDef hUsbDeviceFS;
+uint8_t data[2] = {'0','0'};
 
 /* USER CODE END PV */
 
@@ -105,6 +107,8 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+	  data[0] = '0';
+	  data[1] = '0';
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
