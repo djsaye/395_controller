@@ -312,53 +312,153 @@ __ALIGN_BEGIN static uint8_t USBD_HID_DeviceQualifierDesc[USB_LEN_DEV_QUALIFIER_
 
 __ALIGN_BEGIN static uint8_t HID_MOUSE_ReportDesc[HID_MOUSE_REPORT_DESC_SIZE] __ALIGN_END =
 {
-  0x05,   0x01,
-  0x09,   0x02,
-  0xA1,   0x01,
-  0x09,   0x01,
+	    0x05, 0x01,                    // USAGE_PAGE (Generic Desktop)
+	    0x09, 0x04,                    // USAGE (Joystick)
+	    0xa1, 0x01,                    // COLLECTION (Application)
 
-  0xA1,   0x00,
-  0x05,   0x09,
-  0x19,   0x01,
-  0x29,   0x03,
+	    0x05, 0x02,						//   USAGE_PAGE (Simulation Controls)
+	    0x09, 0xbb,                    //   USAGE (Throttle)
+	    0x15, 0x00,                    //   LOGICAL_MINIMUM (0)
+	    0x26, 0x00, 0x10,              //   LOGICAL_MAXIMUM (4096)
+	    0x75, 0x10,                    //   REPORT_SIZE (16)
+	    0x95, 0x01,                    //   REPORT_COUNT (1)
+	    0x81, 0x02,                    //   INPUT (Data,Var,Abs)
 
-  0x15,   0x00,
-  0x25,   0x01,
-  0x95,   0x03,
-  0x75,   0x01,
 
-  0x81,   0x02,
-  0x95,   0x01,
-  0x75,   0x05,
-  0x81,   0x01,
 
-  0x05,   0x01,
-  0x09,   0x30,
-  0x09,   0x31,
-  0x09,   0x38,
+	    0x05, 0x02,                    //   USAGE_PAGE (Simulation Controls)
+	    0x09, 0xba,                    //   USAGE (Rudder)
+	    0x15, 0x00,                    //   LOGICAL_MINIMUM (0)
+	    0x26, 0x00, 0x10,              //   LOGICAL_MAXIMUM (4096)
+	    0x75, 0x10,                    //   REPORT_SIZE (16)
+	    0x95, 0x01,                    //   REPORT_COUNT (1)
+	    0x81, 0x02,                    //   INPUT (Data,Var,Abs)
 
-  0x15,   0x81,
-  0x25,   0x7F,
-  0x75,   0x08,
-  0x95,   0x03,
 
-  0x81,   0x06,
-  0xC0,   0x09,
-  0x3c,   0x05,
-  0xff,   0x09,
 
-  0x01,   0x15,
-  0x00,   0x25,
-  0x01,   0x75,
-  0x01,   0x95,
+	    0x05, 0x01,                    //   USAGE_PAGE (Generic Desktop)
+	    0x09, 0x01,                    //   USAGE (Pointer)
+	    0xa1, 0x00,                    //   COLLECTION (Physical)
+	    0x09, 0x30,                    //     USAGE (X)
 
-  0x02,   0xb1,
-  0x22,   0x75,
-  0x06,   0x95,
-  0x01,   0xb1,
+	    0x09, 0x31,                    //     USAGE (Y)
 
-  0x01,   0xc0
+
+	    0x09, 0x32,                    //     USAGE (Z)
+
+	    0x15, 0x00,                    //     LOGICAL_MINIMUM (0)
+	    0x26, 0x00, 0x10,              //     LOGICAL_MAXIMUM (4096)
+	    0x75, 0x10,                    //     REPORT_SIZE (16)
+	    0x95, 0x03,       //     REPORT_COUNT (x)
+	    0x81, 0x02,                    //     INPUT (Data,Var,Abs)
+	    0xc0,                          //   END_COLLECTION
+		// (JOYSTICK_AXIS_NUM > 0)
+
+
+	    0x05, 0x01,                    //   USAGE_PAGE (Generic Desktop)
+	    0x09, 0x01,                    //   USAGE (Pointer)
+	    0xa1, 0x00,                    //   COLLECTION (Physical)
+	    0x09, 0x33,                    //     USAGE (Rx)
+
+	    0x09, 0x34,                    //     USAGE (Ry)
+
+	    0x09, 0x35,                    //     USAGE (Rz)
+
+	    0x15, 0x00,                    //     LOGICAL_MINIMUM (0)
+	    0x26, 0x00, 0x10,              //     LOGICAL_MAXIMUM (4096)
+	    0x75, 0x10,                    //     REPORT_SIZE (16)
+	    0x95, 0x03,      //     REPORT_COUNT (x)
+	    0x81, 0x02,                    //     INPUT (Data,Var,Abs)
+	    0xc0,                          //   END_COLLECTION
+		// (SECONDARY_AXIS_NUM > 0)
+
+
+	    0x05, 0x09,                    //   USAGE_PAGE (Button)
+	    0x19, 0x01,                    //   USAGE_MINIMUM (Button 1)
+	    0x29, 0x0C,             //   USAGE_MAXIMUM (Button x)
+	    0x15, 0x00,                    //   LOGICAL_MINIMUM (0)
+	    0x25, 0x01,                    //   LOGICAL_MAXIMUM (1)
+	    0x75, 0x01,                    //   REPORT_SIZE (1)
+	    0x95, 0x10,        						 //   REPORT_COUNT (16)
+	    0x81, 0x02,                    //   INPUT (Data,Var,Abs)
+		//	(BUTTONS_NUM > 0)
+	    0xc0,                          // END_COLLECTION
 };
+
+//__ALIGN_BEGIN static uint8_t HID_DEVICE_ReportDesc[HID_DEVICE_REPORT_DESC_SIZE]  __ALIGN_END =
+//{
+//    0x05, 0x01,                    // USAGE_PAGE (Generic Desktop)
+//    0x09, 0x04,                    // USAGE (Joystick)
+//    0xa1, 0x01,                    // COLLECTION (Application)
+//
+//    0x05, 0x02,                    //   USAGE_PAGE (Simulation Controls)
+//    0x09, 0xbb,                    //   USAGE (Throttle)
+//    0x15, 0x00,                    //   LOGICAL_MINIMUM (0)
+//    0x26, 0x00, 0x10,              //   LOGICAL_MAXIMUM (4096)
+//    0x75, 0x10,                    //   REPORT_SIZE (16)
+//    0x95, 0x01,                    //   REPORT_COUNT (1)
+//    0x81, 0x02,                    //   INPUT (Data,Var,Abs)
+//
+//
+//
+//    0x05, 0x02,                    //   USAGE_PAGE (Simulation Controls)
+//    0x09, 0xba,                    //   USAGE (Rudder)
+//    0x15, 0x00,                    //   LOGICAL_MINIMUM (0)
+//    0x26, 0x00, 0x10,              //   LOGICAL_MAXIMUM (4096)
+//    0x75, 0x10,                    //   REPORT_SIZE (16)
+//    0x95, 0x01,                    //   REPORT_COUNT (1)
+//    0x81, 0x02,                    //   INPUT (Data,Var,Abs)
+//
+//
+//
+//    0x05, 0x01,                    //   USAGE_PAGE (Generic Desktop)
+//    0x09, 0x01,                    //   USAGE (Pointer)
+//    0xa1, 0x00,                    //   COLLECTION (Physical)
+//    0x09, 0x30,                    //     USAGE (X)
+//
+//    0x09, 0x31,                    //     USAGE (Y)
+//
+//
+//    0x09, 0x32,                    //     USAGE (Z)
+//
+//    0x15, 0x00,                    //     LOGICAL_MINIMUM (0)
+//    0x26, 0x00, 0x10,              //     LOGICAL_MAXIMUM (4096)
+//    0x75, 0x10,                    //     REPORT_SIZE (16)
+//    0x95, JOYSTICK_AXIS_NUM,       //     REPORT_COUNT (x)
+//    0x81, 0x02,                    //     INPUT (Data,Var,Abs)
+//    0xc0,                          //   END_COLLECTION
+//	// (JOYSTICK_AXIS_NUM > 0)
+//
+//
+//    0x05, 0x01,                    //   USAGE_PAGE (Generic Desktop)
+//    0x09, 0x01,                    //   USAGE (Pointer)
+//    0xa1, 0x00,                    //   COLLECTION (Physical)
+//    0x09, 0x33,                    //     USAGE (Rx)
+//
+//    0x09, 0x34,                    //     USAGE (Ry)
+//
+//    0x09, 0x35,                    //     USAGE (Rz)
+//
+//    0x15, 0x00,                    //     LOGICAL_MINIMUM (0)
+//    0x26, 0x00, 0x10,              //     LOGICAL_MAXIMUM (4096)
+//    0x75, 0x10,                    //     REPORT_SIZE (16)
+//    0x95, SECONDARY_AXIS_NUM,      //     REPORT_COUNT (x)
+//    0x81, 0x02,                    //     INPUT (Data,Var,Abs)
+//    0xc0,                          //   END_COLLECTION
+//	// (SECONDARY_AXIS_NUM > 0)
+//
+//
+//    0x05, 0x09,                    //   USAGE_PAGE (Button)
+//    0x19, 0x01,                    //   USAGE_MINIMUM (Button 1)
+//    0x29, BUTTONS_NUM,             //   USAGE_MAXIMUM (Button x)
+//    0x15, 0x00,                    //   LOGICAL_MINIMUM (0)
+//    0x25, 0x01,                    //   LOGICAL_MAXIMUM (1)
+//    0x75, 0x01,                    //   REPORT_SIZE (1)
+//    0x95, 0x10,        						 //   REPORT_COUNT (16)
+//    0x81, 0x02,                    //   INPUT (Data,Var,Abs)
+//	//	(BUTTONS_NUM > 0)
+//    0xc0,                          // END_COLLECTION
+//};
 
 /**
   * @}
