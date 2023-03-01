@@ -23,6 +23,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 //#include "usbd_custom_hid_if.h"
+#include "usbd_hid.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -48,7 +49,7 @@ SPI_HandleTypeDef hspi1;
 
 /* USER CODE BEGIN PV */
 extern USBD_HandleTypeDef hUsbDeviceFS;
-uint8_t data[2] = {'0','0'};
+uint16_t report_data[9];
 
 /* USER CODE END PV */
 
@@ -59,7 +60,7 @@ static void MX_I2C1_Init(void);
 static void MX_I2S3_Init(void);
 static void MX_SPI1_Init(void);
 /* USER CODE BEGIN PFP */
-
+void poll_buttons(uint16_t * p_button_state);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -105,10 +106,13 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+  uint16_t buttons_state;
   while (1)
   {
-	  data[0] = '0';
-	  data[1] = '0';
+	 poll_buttons(&buttons_state);
+	 report_data[8] = buttons_state;
+	 USBD_HID_SendReport(&hUsbDeviceFS, (uint8_t*) &report_data, (9)*sizeof(uint16_t));
+	 HAL_Delay(10);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -306,11 +310,13 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(OTG_FS_PowerSwitchOn_GPIO_Port, &GPIO_InitStruct);
 
-  /*Configure GPIO pin : BUTTON_Pin */
-  GPIO_InitStruct.Pin = BUTTON_Pin;
+  /*Configure GPIO pins : BUTTON1_Pin BUTTON2_Pin BUTTON4_Pin BUTTON5_Pin
+                           BUTTON6_Pin BUTTON7_Pin BUTTON8_Pin BUTTON9_Pin */
+  GPIO_InitStruct.Pin = BUTTON1_Pin|BUTTON2_Pin|BUTTON4_Pin|BUTTON5_Pin
+                          |BUTTON6_Pin|BUTTON7_Pin|BUTTON8_Pin|BUTTON9_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
   GPIO_InitStruct.Pull = GPIO_PULLUP;
-  HAL_GPIO_Init(BUTTON_GPIO_Port, &GPIO_InitStruct);
+  HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 
   /*Configure GPIO pin : PDM_OUT_Pin */
   GPIO_InitStruct.Pin = PDM_OUT_Pin;
@@ -332,6 +338,12 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(BOOT1_GPIO_Port, &GPIO_InitStruct);
 
+  /*Configure GPIO pins : BUTTON3_Pin BUTTON12_Pin */
+  GPIO_InitStruct.Pin = BUTTON3_Pin|BUTTON12_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_PULLUP;
+  HAL_GPIO_Init(GPIOE, &GPIO_InitStruct);
+
   /*Configure GPIO pin : CLK_IN_Pin */
   GPIO_InitStruct.Pin = CLK_IN_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
@@ -349,6 +361,12 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
 
+  /*Configure GPIO pins : BUTTON10_Pin BUTTON11_Pin */
+  GPIO_InitStruct.Pin = BUTTON10_Pin|BUTTON11_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_PULLUP;
+  HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
+
   /*Configure GPIO pin : OTG_FS_OverCurrent_Pin */
   GPIO_InitStruct.Pin = OTG_FS_OverCurrent_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
@@ -364,7 +382,23 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
-
+void poll_buttons (uint16_t * p_button_state)
+{
+	*p_button_state = 0;
+	*p_button_state |= HAL_GPIO_ReadPin(BUTTON1_GPIO_Port, BUTTON1_Pin);
+	*p_button_state |= HAL_GPIO_ReadPin(BUTTON2_GPIO_Port, BUTTON2_Pin) << 1;
+	*p_button_state |= HAL_GPIO_ReadPin(BUTTON3_GPIO_Port, BUTTON3_Pin) << 2;
+	*p_button_state |= HAL_GPIO_ReadPin(BUTTON4_GPIO_Port, BUTTON4_Pin) << 3;
+	*p_button_state |= HAL_GPIO_ReadPin(BUTTON5_GPIO_Port, BUTTON5_Pin) << 4;
+	*p_button_state |= HAL_GPIO_ReadPin(BUTTON6_GPIO_Port, BUTTON6_Pin) << 5;
+	*p_button_state |= HAL_GPIO_ReadPin(BUTTON7_GPIO_Port, BUTTON7_Pin) << 6;
+	*p_button_state |= HAL_GPIO_ReadPin(BUTTON8_GPIO_Port, BUTTON8_Pin) << 7;
+	*p_button_state |= HAL_GPIO_ReadPin(BUTTON9_GPIO_Port, BUTTON9_Pin) << 8;
+	*p_button_state |= HAL_GPIO_ReadPin(BUTTON10_GPIO_Port, BUTTON10_Pin) << 9;
+	*p_button_state |= HAL_GPIO_ReadPin(BUTTON11_GPIO_Port, BUTTON11_Pin) << 10;
+	*p_button_state |= HAL_GPIO_ReadPin(BUTTON12_GPIO_Port, BUTTON12_Pin) << 11;
+	*p_button_state ^= 0x0FFF;
+}
 /* USER CODE END 4 */
 
 /**
