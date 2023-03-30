@@ -97,6 +97,10 @@ void Error_Handler(void);
 #define BUTTON12_GPIO_Port GPIOE
 #define CLK_IN_Pin GPIO_PIN_10
 #define CLK_IN_GPIO_Port GPIOB
+#define JOYSTICK_B_2_Pin GPIO_PIN_10
+#define JOYSTICK_B_2_GPIO_Port GPIOD
+#define JOYSTICK_B_1_Pin GPIO_PIN_11
+#define JOYSTICK_B_1_GPIO_Port GPIOD
 #define LD4_Pin GPIO_PIN_12
 #define LD4_GPIO_Port GPIOD
 #define LD3_Pin GPIO_PIN_13
