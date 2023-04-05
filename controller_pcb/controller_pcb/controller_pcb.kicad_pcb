@@ -291,7 +291,7 @@
 
   (footprint "COM-09032:XDCR_COM-09032" (layer "F.Cu")
     (tedit 640691AC) (tstamp 0850d44a-6bde-4886-b872-ef2fda5e1590)
-    (at 83.82 144.78)
+    (at 85.725 144.78)
     (property "MANUFACTURER" "SparkFun Electronics")
     (property "MAXIMUM_PACKAGE_HEIGHT" "30.1mm")
     (property "PARTREV" "N/A")
