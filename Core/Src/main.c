@@ -128,9 +128,10 @@ int main(void)
 	  if(joystick_val[1] > 3000){
 	  		  HAL_GPIO_WritePin(LD5_GPIO_Port, LD5_Pin, GPIO_PIN_SET);
 	  	  }
-	  if(joystick_val[1] > 1000){
+	  if(joystick_val[1] < 1000){
 	  		  HAL_GPIO_WritePin(LD5_GPIO_Port, LD5_Pin, GPIO_PIN_RESET);
 	  	  }
+	  //HAL_ADC_Stop_DMA(&hadc1);
 	 //read_joystick()
 	 //poll_buttons(&buttons_state);
 	 //for(i = 0; i < 4; i++){
@@ -138,7 +139,7 @@ int main(void)
 	// }
 	 //report_data[4] = buttons_state;
 	 //USBD_HID_SendReport(&hUsbDeviceFS, (uint8_t*) &report_data, (5)*sizeof(uint16_t));
-	 //HAL_Delay(10);
+	 HAL_Delay(10);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -228,7 +229,7 @@ static void MX_ADC1_Init(void)
   */
   sConfig.Channel = ADC_CHANNEL_1;
   sConfig.Rank = 1;
-  sConfig.SamplingTime = ADC_SAMPLETIME_480CYCLES;
+  sConfig.SamplingTime = ADC_SAMPLETIME_144CYCLES;
   if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
   {
     Error_Handler();
