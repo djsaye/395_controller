@@ -70,7 +70,7 @@ void poll_buttons(uint16_t * p_button_state);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-
+uint32_t joystick_val[2];
 /* USER CODE END 0 */
 
 /**
@@ -108,24 +108,37 @@ int main(void)
   MX_ADC1_Init();
   MX_USB_DEVICE_Init();
   /* USER CODE BEGIN 2 */
-  HAL
+  HAL_ADC_Start_DMA(&hadc1, joystick_val, 2);
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   uint16_t buttons_state;
-  uint16_t joystick = 2048;
+  //uint16_t joystick = 2048;
   int i;
   while (1)
   {
+	  HAL_ADC_Start_DMA(&hadc1, joystick_val, 2);
+	  if(joystick_val[0] > 3000){
+		  HAL_GPIO_WritePin(LD6_GPIO_Port, LD6_Pin, GPIO_PIN_SET);
+	  }
+	  if(joystick_val[0] < 1000){
+	  		  HAL_GPIO_WritePin(LD6_GPIO_Port, LD6_Pin, GPIO_PIN_RESET);
+	  	  }
+	  if(joystick_val[1] > 3000){
+	  		  HAL_GPIO_WritePin(LD5_GPIO_Port, LD5_Pin, GPIO_PIN_SET);
+	  	  }
+	  if(joystick_val[1] > 1000){
+	  		  HAL_GPIO_WritePin(LD5_GPIO_Port, LD5_Pin, GPIO_PIN_RESET);
+	  	  }
 	 //read_joystick()
-	 poll_buttons(&buttons_state);
-	 for(i = 0; i < 8; i++){
-		 report_data[i] = joystick;
-	 }
-	 report_data[8] = buttons_state;
-	 USBD_HID_SendReport(&hUsbDeviceFS, (uint8_t*) &report_data, (9)*sizeof(uint16_t));
-	 HAL_Delay(10);
+	 //poll_buttons(&buttons_state);
+	 //for(i = 0; i < 4; i++){
+	//	 report_data[i] = (uint16_t) joystick_val[i];
+	// }
+	 //report_data[4] = buttons_state;
+	 //USBD_HID_SendReport(&hUsbDeviceFS, (uint8_t*) &report_data, (5)*sizeof(uint16_t));
+	 //HAL_Delay(10);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -199,14 +212,14 @@ static void MX_ADC1_Init(void)
   hadc1.Init.ClockPrescaler = ADC_CLOCK_SYNC_PCLK_DIV4;
   hadc1.Init.Resolution = ADC_RESOLUTION_12B;
   hadc1.Init.ScanConvMode = ENABLE;
-  hadc1.Init.ContinuousConvMode = ENABLE;
+  hadc1.Init.ContinuousConvMode = DISABLE;
   hadc1.Init.DiscontinuousConvMode = DISABLE;
   hadc1.Init.ExternalTrigConvEdge = ADC_EXTERNALTRIGCONVEDGE_NONE;
   hadc1.Init.ExternalTrigConv = ADC_SOFTWARE_START;
   hadc1.Init.DataAlign = ADC_DATAALIGN_RIGHT;
-  hadc1.Init.NbrOfConversion = 4;
+  hadc1.Init.NbrOfConversion = 2;
   hadc1.Init.DMAContinuousRequests = DISABLE;
-  hadc1.Init.EOCSelection = ADC_EOC_SINGLE_CONV;
+  hadc1.Init.EOCSelection = ADC_EOC_SEQ_CONV;
   if (HAL_ADC_Init(&hadc1) != HAL_OK)
   {
     Error_Handler();
@@ -224,22 +237,6 @@ static void MX_ADC1_Init(void)
   */
   sConfig.Channel = ADC_CHANNEL_2;
   sConfig.Rank = 2;
-  if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
-  {
-    Error_Handler();
-  }
-  /** Configure for the selected ADC regular channel its corresponding rank in the sequencer and its sample time.
-  */
-  sConfig.Channel = ADC_CHANNEL_8;
-  sConfig.Rank = 3;
-  if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
-  {
-    Error_Handler();
-  }
-  /** Configure for the selected ADC regular channel its corresponding rank in the sequencer and its sample time.
-  */
-  sConfig.Channel = ADC_CHANNEL_9;
-  sConfig.Rank = 4;
   if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
   {
     Error_Handler();
@@ -485,6 +482,29 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
+
+//uint16_t FilterWindow (uint32_t * p_buf, uint16_t new_val)
+//{
+//	uint16_t ret;
+//
+//	p_buf[FILTER_WINDOW_SIZE-1] = new_val;
+//
+//	for (uint8_t i=2; i<=FILTER_WINDOW_SIZE; i++)
+//	{
+//		p_buf[FILTER_WINDOW_SIZE-1] += p_buf[FILTER_WINDOW_SIZE - i];
+//	}
+//
+//	p_buf[FILTER_WINDOW_SIZE-1] /= FILTER_WINDOW_SIZE;
+//
+//	ret = p_buf[FILTER_WINDOW_SIZE-1];
+//
+//	for (int i=0; i<FILTER_WINDOW_SIZE; i++)
+//	{
+//		p_buf[i-1] = p_buf[i];
+//	}
+//
+//		return ret;
+//}
 
 void poll_buttons (uint16_t * p_button_state)
 {

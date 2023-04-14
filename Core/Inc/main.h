@@ -77,6 +77,10 @@ void Error_Handler(void);
 #define PDM_OUT_GPIO_Port GPIOC
 #define B1_Pin GPIO_PIN_0
 #define B1_GPIO_Port GPIOA
+#define JOY1_X_Pin GPIO_PIN_1
+#define JOY1_X_GPIO_Port GPIOA
+#define JOY1_Y_Pin GPIO_PIN_2
+#define JOY1_Y_GPIO_Port GPIOA
 #define I2S3_WS_Pin GPIO_PIN_4
 #define I2S3_WS_GPIO_Port GPIOA
 #define SPI1_SCK_Pin GPIO_PIN_5
@@ -89,6 +93,10 @@ void Error_Handler(void);
 #define BUTTON4_GPIO_Port GPIOC
 #define BUTTON5_Pin GPIO_PIN_5
 #define BUTTON5_GPIO_Port GPIOC
+#define JOY2_X_Pin GPIO_PIN_0
+#define JOY2_X_GPIO_Port GPIOB
+#define JOY2_Y_Pin GPIO_PIN_1
+#define JOY2_Y_GPIO_Port GPIOB
 #define BOOT1_Pin GPIO_PIN_2
 #define BOOT1_GPIO_Port GPIOB
 #define BUTTON3_Pin GPIO_PIN_7
